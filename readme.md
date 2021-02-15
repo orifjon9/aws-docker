@@ -11,12 +11,16 @@
     - then create
 
 ## Manually create with mondodb in a container
+MondoDB and a backend app run on ecs the same task and service
+[Go to source codes](https://github.com/orifjon9/FeedBoard)
+
+
 - Go to AWS Console and search ESC
 - Create a cluster
 - Create a Task Definitions
     - Fargate
         - Add Containers for mongo and feedboard api
-        - Add volume EFS to store mongo db data
+        - Add volume EFS to store mongo db data. Not need if you use 3rd party db service
 - Run task that was created on Task Definition step
 - Create VPC 
     - set sub nets
@@ -56,3 +60,19 @@ The api should start responding now
 The new updated task should run.
 
 
+## UI(React) + Backend(Node) + MongoDB Atlas
+The first, we need to have an account on MongoDB Atlas then create a cluster with selecting aws and region where we run our backend services close by. Make sure, MongoDB Atlas allow pass request from aws
+
+We have source codes. [Go to source codes](https://github.com/orifjon9/FeedBoard)
+There are ui and api apps codes
+
+Just follow to the steps above.  So, here we will be have one service and two tasks under the service
+- Create a task defenition for api
+    - should contain one container and It is api
+- Create a task defenition for ui app
+    - should contain one container and it is react app based on nginx
+
+You can run them under one service.
+
+Make sure MongoDB Atlas allow aws requests and open for all OR go to Network access and create a peearing(MongoDB Atlas tells what to do aws cloud side)
+If you want to assign load balancers for both then set own service for both task
